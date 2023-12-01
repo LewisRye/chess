@@ -202,6 +202,12 @@ void Board::DoMove(Move &mv)
 {
   // implement
 
+  if (mv.mEnd->IsEmpty())
+  {
+    mv.mStart->Empty();
+    mv.mEnd->Place(mv.mMovingPiece);
+  }
+
   // update relative variables
   // if the moving piece hasn't moved
   if (!mv.mMovingPiece->GetHasMoved())
@@ -223,6 +229,17 @@ void Board::UndoMove()
   auto mv = mMovesPlayed[mMovesPlayed.size()-1];
   mMovesPlayed.pop_back(); 
 
+  if (mv.mKilledPiece == nullptr) 
+  {
+    mv.mEnd->Empty();
+    mv.mStart->Place(mv.mMovingPiece);
+  }
+  else
+  {
+    mv.mEnd->Place(mv.mKilledPiece);
+    mv.mStart->Place(mv.mMovingPiece);
+  }
+ 
   // implement
 
   if (mv.mIsFirstMove)
