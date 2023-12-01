@@ -21,15 +21,14 @@ Board::Board()
   }
 
   PieceType backRow[COLS] = {
-    PieceType::kRook,
-    PieceType::kKnight,
-    PieceType::kBishop,
-    PieceType::kQueen,
-    PieceType::kKing,
-    PieceType::kBishop,
-    PieceType::kKnight,
-    PieceType::kRook
-  };
+      PieceType::kRook,
+      PieceType::kKnight,
+      PieceType::kBishop,
+      PieceType::kQueen,
+      PieceType::kKing,
+      PieceType::kBishop,
+      PieceType::kKnight,
+      PieceType::kRook};
   for (int col = 0; col < COLS; ++col)
   {
     AddPiece(PieceColour::kBlack, backRow[col], GetSquare(0, col));
@@ -145,14 +144,14 @@ bool Board::InRange(int row, int col)
 
 // --------------------------------------------------------------------------------------------------------------------
 int Board::GetRows()
-{ 
-  return ROWS; 
+{
+  return ROWS;
 }
 
 // --------------------------------------------------------------------------------------------------------------------
 int Board::GetCols()
-{ 
-  return COLS; 
+{
+  return COLS;
 }
 
 // --------------------------------------------------------------------------------------------------------------------
@@ -207,6 +206,12 @@ void Board::DoMove(Move &mv)
     mv.mStart->Empty();
     mv.mEnd->Place(mv.mMovingPiece);
   }
+  else
+  {
+    mv.mStart->Empty();
+    mv.mEnd->Empty();
+    mv.mEnd->Place(mv.mMovingPiece);
+  }
 
   // update relative variables
   // if the moving piece hasn't moved
@@ -222,14 +227,15 @@ void Board::DoMove(Move &mv)
 // --------------------------------------------------------------------------------------------------------------------
 void Board::UndoMove()
 {
-  if(mMovesPlayed.size() == 0){
+  if (mMovesPlayed.size() == 0)
+  {
     return;
   }
 
-  auto mv = mMovesPlayed[mMovesPlayed.size()-1];
-  mMovesPlayed.pop_back(); 
+  auto mv = mMovesPlayed[mMovesPlayed.size() - 1];
+  mMovesPlayed.pop_back();
 
-  if (mv.mKilledPiece == nullptr) 
+  if (mv.mKilledPiece == nullptr)
   {
     mv.mEnd->Empty();
     mv.mStart->Place(mv.mMovingPiece);
@@ -239,7 +245,7 @@ void Board::UndoMove()
     mv.mEnd->Place(mv.mKilledPiece);
     mv.mStart->Place(mv.mMovingPiece);
   }
- 
+
   // implement
 
   if (mv.mIsFirstMove)
