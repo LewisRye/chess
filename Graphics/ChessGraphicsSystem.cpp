@@ -14,6 +14,7 @@ const int CHESS_TILE_SIZE = 56;
 
 const char *CHESS_PIECES_FILEPATH = "Graphics/IMG/pieces.png";
 const char *CHESS_BOARD_FILEPATH = "Graphics/IMG/board.png";
+const char *CHESS_ICON_FILEPATH = "Graphics/IMG/icon.png";
 
 // --------------------------------------------------------------------------------------------------------------------
 ChessGraphicsSystem::ChessGraphicsSystem(ChessController *controller)
@@ -31,6 +32,7 @@ ChessGraphicsSystem::ChessGraphicsSystem(ChessController *controller)
     }
 
     // Create window
+    SDL_Surface* icon = IMG_Load(CHESS_ICON_FILEPATH);
     mWindow = SDL_CreateWindow(
         "HackSussex Chess",
         SDL_WINDOWPOS_UNDEFINED,
@@ -39,6 +41,7 @@ ChessGraphicsSystem::ChessGraphicsSystem(ChessController *controller)
         SCREEN_HEIGHT,
         SDL_WINDOW_SHOWN
     );
+    SDL_SetWindowIcon(mWindow, icon);
 
     if(!mWindow)
     {
