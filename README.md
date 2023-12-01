@@ -96,3 +96,12 @@ Windows:
 Followed by
 
 ```.\Chess.exe```
+
+## Common Setup Errors
+
+- On windows there is no make
+  - You might need to install make: [https://answers.microsoft.com/en-us/windows/forum/all/powershell-terminal-in-vs-code-make-the-term-make/74d69621-c91e-4929-83c2-2252f0371397](https://answers.microsoft.com/en-us/windows/forum/all/powershell-terminal-in-vs-code-make-the-term-make/74d69621-c91e-4929-83c2-2252f0371397)
+- On Mac I get the error `fatal error: 'SDL.h' file not found` 
+  - Every `#include <SDL.h>` needs to be replaced with `#include <SDL2/SDL.h>`
+  - Every `#include <SDL_image.h>` needs to be replaced with `#include <SDL2_image/SDL_image.h>`
+  - These are in `ChessTexture.cpp`, `ChessGraphicsSystem.cpp`, and `ChessGraphicsSystem.hpp`
