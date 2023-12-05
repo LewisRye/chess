@@ -208,22 +208,13 @@ void Board::DoMove(Move &mv)
   }
   else
   {
-    if (mv.mMovingPiece->GetColour() != mv.mKilledPiece->GetColour())
-    {
-      mv.mStart->Empty();
-      mv.mEnd->Empty();
-      mv.mEnd->Place(mv.mMovingPiece);
-      Recordmove(mv);
-    }
+    mv.mStart->Empty();
+    mv.mEnd->Empty();
+    mv.mEnd->Place(mv.mMovingPiece);
   }
 
   // update relative variables
   // if the moving piece hasn't moved
-  Recordmove(mv);
-}
-
-void Board::Recordmove(Move &mv)
-{
   if (!mv.mMovingPiece->GetHasMoved())
   {
     mv.mMovingPiece->SetHasMoved(true);
@@ -232,6 +223,7 @@ void Board::Recordmove(Move &mv)
   // record the move
   mMovesPlayed.push_back(mv);
 }
+
 // --------------------------------------------------------------------------------------------------------------------
 void Board::UndoMove()
 {

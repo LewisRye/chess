@@ -56,7 +56,7 @@ std::vector<Move> Pawn::ListPseudoLegalMoves(Board *board)
       continue;
     }
     Move mv = Move(board->GetSquare(row, col), board->GetSquare(nextRow, nextCol), *board);
-    if (IsBlockedByPiece(mv)) // there is a piece to take
+    if (IsBlockedByPiece(mv) && mv.mMovingPiece->GetColour() != mv.mKilledPiece->GetColour()) // there is a piece to take
     {
       mPseudoLegalMoves.push_back(mv);
     }

@@ -34,7 +34,6 @@ public:
   bool IsChecked(PieceColour colour);
   bool IsCheckmated(PieceColour colour);
   bool IsStalemated(PieceColour colour);
-  void Recordmove(Move &mv);
 
   // Returns a pointer to Square in board at row and col corresponding to coord; ex: "d4", "e4"
   Square *GetSquare(int row, int col);
