@@ -14,7 +14,7 @@ std::vector<Move> King::ListPseudoLegalMoves(Board *board)
   int col = mPosition->GetCol();
 
   int move[8][2] = {{-1, -1}, {-1, 1}, {1, -1}, {1, 1}, {-1, 0}, {1, 0}, {0, 1}, {0, -1}};
-  for (int j = 0; j < 8; ++j)
+  for (int j = 0; j < 8; j++)
   {
     int nextRow = row + move[j][0];
     int nextCol = col + move[j][1];
@@ -23,12 +23,17 @@ std::vector<Move> King::ListPseudoLegalMoves(Board *board)
     {
       Move mv = Move(board->GetSquare(row, col), board->GetSquare(nextRow, nextCol), *board);
 
-      if (!IsBlockedByPiece(mv) && mv.mMovingPiece->GetColour() != mv.mKilledPiece->GetColour())
+      if (IsBlockedByPiece(mv) && mv.mMovingPiece->GetColour() != mv.mKilledPiece->GetColour())
+      {
+        mPseudoLegalMoves.push_back(mv);
+      }
+      else if (!IsBlockedByPiece(mv))
       {
         mPseudoLegalMoves.push_back(mv);
       }
     }
   }
+
   return mPseudoLegalMoves;
 }
 
