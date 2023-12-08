@@ -6,7 +6,6 @@
 #include "Pieces/Queen.hpp"
 #include "Pieces/Rook.hpp"
 
-#include <iostream>
 #include <stdexcept>
 
 // --------------------------------------------------------------------------------------------------------------------
@@ -187,7 +186,8 @@ std::vector<Move> Board::ListLegalMoves(PieceColour colour)
     for (auto mv : pseudo_legal_moves)
     {
       DoMove(mv);
-      if (!IsChecked(mv.mMovingPiece->GetColour()))
+      PieceColour colour = mv.mMovingPiece->GetColour();
+      if (!IsChecked(colour))
       {
         legalMoves.push_back(mv);
       }
@@ -295,6 +295,10 @@ bool Board::IsChecked(PieceColour colour)
 // --------------------------------------------------------------------------------------------------------------------
 bool Board::IsCheckmated(PieceColour colour)
 {
+  if (IsChecked(colour))
+  {
+    return ListLegalMoves(colour).empty();
+  }
   return false;
 }
 
