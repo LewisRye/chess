@@ -26,7 +26,7 @@ std::vector<Move> Knight::ListPseudoLegalMoves(Board *board)
     {
       Move mv = Move(board->GetSquare(row, col), board->GetSquare(nextRow, nextCol), *board);
 
-      if (!IsBlockedByPiece(mv) || mv.mMovingPiece->GetColour() != mv.mKilledPiece->GetColour())
+      if (!IsBlockedByPiece(mv) || mColour != mv.mKilledPiece->GetColour())
       {
         mPseudoLegalMoves.push_back(mv);
       }
