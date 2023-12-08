@@ -28,7 +28,7 @@ std::vector<Move> Rook::ListPseudoLegalMoves(Board *board)
         continue;
       }
       Move mv = Move(board->GetSquare(row, col), board->GetSquare(nextRow, col), *board);
-      if (IsBlockedByPiece(mv) && mv.mMovingPiece->GetColour() != mv.mKilledPiece->GetColour()) // there is a piece to take
+      if (IsBlockedByPiece(mv) && mColour != mv.mKilledPiece->GetColour()) // there is a piece to take
       {
         mPseudoLegalMoves.push_back(mv);
       }
@@ -51,7 +51,7 @@ std::vector<Move> Rook::ListPseudoLegalMoves(Board *board)
         continue;
       }
       Move mv = Move(board->GetSquare(row, col), board->GetSquare(row, nextCol), *board);
-      if (IsBlockedByPiece(mv) && mv.mMovingPiece->GetColour() != mv.mKilledPiece->GetColour()) // there is a piece to take
+      if (IsBlockedByPiece(mv) && mColour != mv.mKilledPiece->GetColour()) // there is a piece to take
       {
         mPseudoLegalMoves.push_back(mv);
       }

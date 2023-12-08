@@ -3,6 +3,7 @@
 #include "Move.hpp"
 #include "Pieces/Piece.hpp"
 
+#include <iostream>
 #include <stdexcept>
 
 // --------------------------------------------------------------------------------------------------------------------
@@ -32,10 +33,12 @@ void ChessGame::TakeTurn(Move mv)
     if (mPlayerInTurn == PieceColour::kWhite)
     {
       mState = BLACK_WIN;
+      std::cout << "BLACK WIN";
     }
     else
     {
       mState = WHITE_WIN;
+      std::cout << "WHITE WIN";
     }
   }
   else if (mBoard->IsStalemated(mPlayerInTurn))

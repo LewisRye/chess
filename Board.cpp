@@ -186,7 +186,8 @@ std::vector<Move> Board::ListLegalMoves(PieceColour colour)
     for (auto mv : pseudo_legal_moves)
     {
       DoMove(mv);
-      if (!IsChecked(mv.mMovingPiece->GetColour()))
+      PieceColour colour = mv.mMovingPiece->GetColour();
+      if (!IsChecked(colour))
       {
         legalMoves.push_back(mv);
       }
@@ -258,22 +259,46 @@ void Board::UndoMove()
 bool Board::IsChecked(PieceColour colour)
 {
   Square *king_pos;
+  int opponent;
   if (colour == PieceColour::kWhite)
   {
     king_pos = mKings[0]->GetPosition();
+    opponent = 1;
   }
   else
   {
     king_pos = mKings[1]->GetPosition();
+    opponent = 0;
   }
 
   // implement
+  
+  for (std::shared_ptr<Piece> p : mPieces[opponent])
+  {
+    if (p->IsDead()) 
+    {
+      continue;
+    }
+
+    for (Move m : p->ListPseudoLegalMoves(this))
+    {
+      if (m.mEnd == king_pos)
+      {
+        return true;
+      }
+    }
+  }
+
   return false;
 }
 
 // --------------------------------------------------------------------------------------------------------------------
 bool Board::IsCheckmated(PieceColour colour)
 {
+  if (IsChecked(colour))
+  {
+    return ListLegalMoves(colour).empty();
+  }
   return false;
 }
 
