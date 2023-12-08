@@ -4,6 +4,7 @@
 #include "../Pieces/Piece.hpp"
 #include "../Move.hpp"
 
+#include <string>
 #include <SDL.h>
 
 // Fwd Declare
@@ -19,6 +20,7 @@ class ChessGraphicsSystem
         ~ChessGraphicsSystem();
 
         void Render(Board *board, std::vector<Move> movesToHighlight);
+        void PlayAudio(std::string s);
         // Creates the game window, renders the game, and listens for input until exit
         void RunChessGame(Board *board);
 
@@ -47,7 +49,7 @@ class ChessGraphicsSystem
         // Loads all the required textures
         void LoadAllMedia();
         // Hues all legal move squares as blue given a selected piece
-        void RenderBlueHighlightedMoves(std::vector<Move> movesToHighlight);
+        void RenderGreenHighlightedMoves(std::vector<Move> movesToHighlight);
         // Helper function for RunChessGame to render the chess board given the current state 
         void RenderBoardState(Board *board);
 };

@@ -51,8 +51,21 @@ void ChessController::HandleClick(int row, int col)
           mGame->TakeTurn(mv);
           mValidMoves = mGame->GetLegalMoves();
           mGraphicsSystem->Render(mGame->GetBoard(), {});
+          mGraphicsSystem->PlayAudio("move");
           return;
         }
+
+        // not currently working
+        /*
+        if (mv.mEnd->IsEmpty())
+        {
+          mGraphicsSystem->PlayAudio("move");
+        }
+        else
+        {
+          mGraphicsSystem->PlayAudio("take");
+        }
+        */
       }
       DeselectSelectedPiece();
       // Renderer renders over highlighted moves if there are any
