@@ -1,5 +1,6 @@
 CXX = g++
-CXXFLAGS = -g -std=c++14 -Wall -Werror=vla -MMD -Wl,-subsystem,windows
+CXXFLAGS = -g -std=c++14 -Wall -Werror=vla -MMD 
+# -Wl,-subsystem,windows
 EXEC = Chess
 SOURCES = $(shell powershell "Get-ChildItem -Recurse -Filter *.cpp -Name")
 OBJECTS = $(SOURCES:.cpp=.o)

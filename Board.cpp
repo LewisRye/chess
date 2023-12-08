@@ -6,6 +6,7 @@
 #include "Pieces/Queen.hpp"
 #include "Pieces/Rook.hpp"
 
+#include <iostream>
 #include <stdexcept>
 
 // --------------------------------------------------------------------------------------------------------------------
@@ -258,16 +259,36 @@ void Board::UndoMove()
 bool Board::IsChecked(PieceColour colour)
 {
   Square *king_pos;
+  int opponent;
   if (colour == PieceColour::kWhite)
   {
     king_pos = mKings[0]->GetPosition();
+    opponent = 1;
   }
   else
   {
     king_pos = mKings[1]->GetPosition();
+    opponent = 0;
   }
 
   // implement
+  
+  for (std::shared_ptr<Piece> p : mPieces[opponent])
+  {
+    if (p->IsDead()) 
+    {
+      continue;
+    }
+
+    for (Move m : p->ListPseudoLegalMoves(this))
+    {
+      if (m.mEnd == king_pos)
+      {
+        return true;
+      }
+    }
+  }
+
   return false;
 }
 
