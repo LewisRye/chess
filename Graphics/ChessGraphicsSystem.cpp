@@ -15,6 +15,8 @@ const int CHESS_TILE_SIZE = 56;
 const char *CHESS_PIECES_FILEPATH = "Graphics/IMG/pieces.png";
 const char *CHESS_BOARD_FILEPATH = "Graphics/IMG/board.png";
 const char *CHESS_ICON_FILEPATH = "Graphics/IMG/icon.png";
+const char *CHESS_MOVE_FILEPATH = "Graphics/AUDIO/move.wav";
+const char *CHESS_TAKE_FILEPATH = "Graphics/AUDIO/take.wav";
 
 // --------------------------------------------------------------------------------------------------------------------
 ChessGraphicsSystem::ChessGraphicsSystem(ChessController *controller)
@@ -22,8 +24,12 @@ ChessGraphicsSystem::ChessGraphicsSystem(ChessController *controller)
 	// Initialize SDL
 	if (SDL_Init(SDL_INIT_VIDEO) < 0)
     {
-		throw std::runtime_error("SDL could not initialize! SDL Error: " + std::string(SDL_GetError()));
+		throw std::runtime_error("SDL could not initialize video! SDL Error: " + std::string(SDL_GetError()));
 	}
+    if (SDL_Init(SDL_INIT_AUDIO) < 0)
+    {
+        throw std::runtime_error("SDL could not initialize video! SDL Error: " + std::string(SDL_GetError()));
+    }
 
     // Set texture filtering to linear
     if(!SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "1"))
@@ -105,6 +111,7 @@ SDL_Point ChessGraphicsSystem::ConvertSDLCoordinatesToChessCoordinates(int sdlX,
     return {(sdlY - OFFSET_FROM_EDGE_OF_BOARD) / CHESS_TILE_SIZE,
             (sdlX - OFFSET_FROM_EDGE_OF_BOARD) / CHESS_TILE_SIZE};
 }
+
 // --------------------------------------------------------------------------------------------------------------------
 int ChessGraphicsSystem::GetChessFigureTextureBoundingRectIndex(PieceColour pieceColour, PieceType pieceType)
 {
@@ -179,14 +186,14 @@ void ChessGraphicsSystem::Render(Board *board, std::vector<Move> movesToHighligh
     SDL_RenderClear(mRenderer);
 
     RenderBoardState(board);
-    RenderBlueHighlightedMoves(movesToHighlight);
+    RenderGreenHighlightedMoves(movesToHighlight);
 
     // Update screen
     SDL_RenderPresent(mRenderer);
 }
 
 // --------------------------------------------------------------------------------------------------------------------
-void ChessGraphicsSystem::RenderBlueHighlightedMoves(std::vector<Move> movesToHighlight)
+void ChessGraphicsSystem::RenderGreenHighlightedMoves(std::vector<Move> movesToHighlight)
 {
     int highlightSize = CHESS_TILE_SIZE / 4;
 
@@ -202,6 +209,39 @@ void ChessGraphicsSystem::RenderBlueHighlightedMoves(std::vector<Move> movesToHi
     SDL_SetRenderDrawColor(mRenderer, 0xFF, 0xFF, 0xFF, 0xFF);
 
 }
+
+// --------------------------------------------------------------------------------------------------------------------
+void ChessGraphicsSystem::PlayAudio(std::string s)
+{
+    SDL_AudioSpec wavSpec;
+    Uint32 wavLength;
+    Uint8 *wavBuffer;
+    // open audio device
+    SDL_AudioDeviceID deviceId = SDL_OpenAudioDevice(NULL, 0, &wavSpec, NULL, 0);
+    SDL_LoadWAV(CHESS_MOVE_FILEPATH, &wavSpec, &wavBuffer, &wavLength);
+    // play audio
+    SDL_QueueAudio(deviceId, wavBuffer, wavLength);
+    SDL_PauseAudioDevice(deviceId, 0);
+
+    // take not currently working
+    /*
+    if (s == "take")
+    {
+        SDL_AudioSpec wavSpec;
+        Uint32 wavLength;
+        Uint8 *wavBuffer;
+        
+        SDL_LoadWAV(CHESS_TAKE_FILEPATH, &wavSpec, &wavBuffer, &wavLength);
+        // open audio device
+        SDL_AudioDeviceID deviceId = SDL_OpenAudioDevice(NULL, 0, &wavSpec, NULL, 0);
+
+        // play audio
+        SDL_QueueAudio(deviceId, wavBuffer, wavLength);
+        SDL_PauseAudioDevice(deviceId, 0);
+    }
+    */
+}
+
 // --------------------------------------------------------------------------------------------------------------------
 void ChessGraphicsSystem::RenderBoardState(Board *board)
 {
